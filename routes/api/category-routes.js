@@ -9,6 +9,18 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+  const sql = `SELECT id, movie_name AS title FROM movies`;
+  
+  db.query(sql, (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+       return;
+    }
+    res.json({
+      message: 'success',
+      data: rows
+    });
+  });
   // find one category by its `id` value
   // be sure to include its associated Products
 });
