@@ -8,8 +8,8 @@ const { Category, Product, ProductTag } = require("../../models");
 router.get("/", async (req, res) => {
   try {
     const categoryData = await Category.findAll(
-      {include: [{ model: Product, through: ProductTag, as: 'category_products' }]}
-    );
+      {include: [{ model: Product, as: 'products' }]
+    });
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
@@ -22,7 +22,7 @@ router.get("/:id", async (req, res) => {
   try {
     // First, we find a user using their primary key (provided by params)
     const categoryData = await Category.findByPk(req.params.id, {
-    include: [{ model: Product, through: ProductTag, as: 'category_products' }]
+    include: [{ model: Product, as: 'products' }]
   });
     // If userData evaluates as false (no user exists with that primary key), then we will send an error message
     if (!categoryData) {
@@ -67,7 +67,7 @@ router.put("/:id", async (req, res) => {
 // delete a category by its `id` value
 router.delete("/:id", async (req, res) => {
   try {
-    const categoryData = await Location.destroy({
+    const categoryData = await Category.destroy({
       where: {
         id: req.params.id,
       },
